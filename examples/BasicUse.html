@@ -7964,7 +7964,7 @@ var _elm_lang$core$Color$Linear = F3(
 		return {ctor: 'Linear', _0: a, _1: b, _2: c};
 	});
 var _elm_lang$core$Color$linear = _elm_lang$core$Color$Linear;
-var _danielnarey$elm_css_basics$CssBasics$valueToString = function (value) {
+var _danielnarey$elm_css_basics$CssBasics$encodeCssValue = function (value) {
 	var unitToString = function (unit) {
 		var _p0 = unit;
 		switch (_p0.ctor) {
@@ -8026,33 +8026,33 @@ var _danielnarey$elm_css_basics$CssBasics$valueToString = function (value) {
 			return A2(
 				_elm_lang$core$String$join,
 				' ',
-				A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['.|>'], _p1._0, _danielnarey$elm_css_basics$CssBasics$valueToString));
+				A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['.|>'], _p1._0, _danielnarey$elm_css_basics$CssBasics$encodeCssValue));
 		case 'Multiple':
 			return A2(
 				_elm_lang$core$String$join,
 				_p1._0,
-				A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['.|>'], _p1._1, _danielnarey$elm_css_basics$CssBasics$valueToString));
+				A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['.|>'], _p1._1, _danielnarey$elm_css_basics$CssBasics$encodeCssValue));
 		case 'Important':
 			return A2(
 				_danielnarey$elm_toolkit$Toolkit_Operators_ops['|++'],
-				_danielnarey$elm_css_basics$CssBasics$valueToString(_p1._0),
+				_danielnarey$elm_css_basics$CssBasics$encodeCssValue(_p1._0),
 				'!important');
 		default:
 			return 'inherit';
 	}
 };
-var _danielnarey$elm_css_basics$CssBasics$declarationToString = function (_p2) {
+var _danielnarey$elm_css_basics$CssBasics$encodeDeclaration = function (_p2) {
 	var _p3 = _p2;
 	return _elm_lang$core$String$concat(
 		_elm_lang$core$Native_List.fromArray(
 			[
 				_p3._0,
 				':',
-				A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['||>'], _p3._1, _danielnarey$elm_css_basics$CssBasics$valueToString),
+				A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['||>'], _p3._1, _danielnarey$elm_css_basics$CssBasics$encodeCssValue),
 				';'
 			]));
 };
-var _danielnarey$elm_css_basics$CssBasics$renderToAttribute = function (declarationList) {
+var _danielnarey$elm_css_basics$CssBasics$toStyleAttribute = function (declarationList) {
 	return _elm_lang$html$Html_Attributes$style(
 		A2(
 			_danielnarey$elm_toolkit$Toolkit_Operators_ops['.|>'],
@@ -8062,7 +8062,7 @@ var _danielnarey$elm_css_basics$CssBasics$renderToAttribute = function (declarat
 				return {
 					ctor: '_Tuple2',
 					_0: _p5._0,
-					_1: A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['||>'], _p5._1, _danielnarey$elm_css_basics$CssBasics$valueToString)
+					_1: A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['||>'], _p5._1, _danielnarey$elm_css_basics$CssBasics$encodeCssValue)
 				};
 			}));
 };
@@ -8523,7 +8523,7 @@ var _danielnarey$elm_stylesheet$Stylesheet$selectorToString = function (selector
 };
 var _danielnarey$elm_stylesheet$Stylesheet$ruleSetToString = function (ruleSet) {
 	var declarations = _elm_lang$core$String$concat(
-		A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['.|>'], ruleSet.declarations, _danielnarey$elm_css_basics$CssBasics$declarationToString));
+		A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['.|>'], ruleSet.declarations, _danielnarey$elm_css_basics$CssBasics$encodeDeclaration));
 	var selectors = A2(
 		_elm_lang$core$String$join,
 		',',
@@ -8583,7 +8583,7 @@ var _danielnarey$elm_stylesheet$Stylesheet$formatCssString = function (string) {
 		_elm_lang$core$String$words(
 			removeComments(string)));
 };
-var _danielnarey$elm_stylesheet$Stylesheet$renderToString = function (stylesheet) {
+var _danielnarey$elm_stylesheet$Stylesheet$toCssString = function (stylesheet) {
 	var ruleStatements = _elm_lang$core$String$concat(
 		A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['.|>'], stylesheet.rules, _danielnarey$elm_stylesheet$Stylesheet$ruleSetToString));
 	var prependedCss = _elm_lang$core$String$concat(stylesheet.prepends);
@@ -8602,7 +8602,7 @@ var _danielnarey$elm_stylesheet$Stylesheet$renderToString = function (stylesheet
 		A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['|++'], importDirectives, prependedCss),
 		ruleStatements);
 };
-var _danielnarey$elm_stylesheet$Stylesheet$renderToHtml = function (stylesheet) {
+var _danielnarey$elm_stylesheet$Stylesheet$toStyleNode = function (stylesheet) {
 	return A3(
 		_elm_lang$html$Html$node,
 		'style',
@@ -8613,7 +8613,7 @@ var _danielnarey$elm_stylesheet$Stylesheet$renderToHtml = function (stylesheet) 
 		_elm_lang$core$Native_List.fromArray(
 			[
 				_elm_lang$html$Html$text(
-				_danielnarey$elm_stylesheet$Stylesheet$renderToString(stylesheet))
+				_danielnarey$elm_stylesheet$Stylesheet$toCssString(stylesheet))
 			]));
 };
 var _danielnarey$elm_stylesheet$Stylesheet$scoped = function (stylesheet) {
@@ -8885,7 +8885,7 @@ var _danielnarey$elm_stylesheet$Main$main = {
 				[]),
 			_elm_lang$core$Native_List.fromArray(
 				[
-					_danielnarey$elm_stylesheet$Stylesheet$renderToHtml(_danielnarey$elm_stylesheet$Main$myStylesheet),
+					_danielnarey$elm_stylesheet$Stylesheet$toStyleNode(_danielnarey$elm_stylesheet$Main$myStylesheet),
 					line1,
 					line2
 				]));

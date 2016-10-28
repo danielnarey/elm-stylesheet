@@ -2,7 +2,7 @@ module Stylesheet exposing
   ( Stylesheet, RuleSet, Selector(..), MatchValue(..), newRuleSet
   , withSelectors, addSelector, withDeclarations, addDeclaration
   , newStylesheet, withImports, addImport, withPrepends, addPrepend, withRules
-  , withRuleSets, addRuleSet, scoped, renderToString, renderToHtml
+  , withRuleSets, addRuleSet, scoped, toCssString, toStyleNode
   )
 
 
@@ -34,8 +34,8 @@ for a full working example.
 @docs newStylesheet, withImports, addImport, withPrepends, addPrepend
 @docs withRules, withRuleSets, addRuleSet, scoped
 
-# Compiling and Rendering a Stylesheet
-@docs renderToString, renderToHtml
+# Compiling/Rendering a Stylesheet
+@docs toCssString, toStyleNode
 
 -}
 
@@ -311,12 +311,12 @@ scoped stylesheet =
   }
 
 
--- COMPILING AND RENDERING A STYLESHEET
+-- COMPILING/RENDERING A STYLESHEET
 
 {-| Returns the compiled stylesheet as a string of CSS code
 -}
-renderToString : Stylesheet number -> String
-renderToString stylesheet =
+toCssString : Stylesheet number -> String
+toCssString stylesheet =
   let
     importDirectives =
       stylesheet.imports
@@ -338,13 +338,13 @@ renderToString stylesheet =
       |++ ruleStatements
 
 
-{-| Returns an `Html.node` with a a `<style>` tag, which contains the stylesheet
+{-| Returns an `Html.node` with a `<style>` tag, which contains the stylesheet
 rendered as a string of CSS code
 -}
-renderToHtml : Stylesheet number -> Html number
-renderToHtml stylesheet =
+toStyleNode : Stylesheet number -> Html number
+toStyleNode stylesheet =
   [ stylesheet
-    |> renderToString
+    |> toCssString
     |> Html.text
   ]
     |> Html.node "style"
@@ -399,7 +399,7 @@ ruleSetToString ruleSet =
 
     declarations =
       ruleSet.declarations
-        .|> Css.declarationToString
+        .|> Css.encodeDeclaration
         |> String.concat
 
   in

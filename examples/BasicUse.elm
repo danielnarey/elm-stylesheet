@@ -79,7 +79,7 @@ main =
 
   in
     [ myStylesheet
-      |> renderToHtml
+      |> toStyleNode
     , line1
     , line2
     ]
