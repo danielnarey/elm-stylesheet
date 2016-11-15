@@ -44,7 +44,6 @@ import Toolkit.Helpers as Helpers
 import CssBasics as Css
 import Html exposing (Html)
 import Html.Attributes as Attributes
-import String
 import List
 import Color exposing (Color)
 
