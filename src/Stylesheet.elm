@@ -319,7 +319,7 @@ toCssString stylesheet =
   let
     importDirectives =
       stylesheet.imports
-        .|> (\a -> "@import url('" ++ a ++ "');")
+       .|> (\a -> "@import url('" ++ a ++ "');")
         |> String.concat
 
     prependedCss =
@@ -328,7 +328,7 @@ toCssString stylesheet =
 
     ruleStatements =
       stylesheet.rules
-        .|> ruleSetToString
+       .|> ruleSetToString
         |> String.concat
 
   in
@@ -360,7 +360,7 @@ formatCssString string =
   let
     removeComments string =
       string
-        |> Helpers.applyList (string ||> getIndices .|> uncurry String.slice)
+        |> Helpers.applyList (string |> getIndices .|> uncurry String.slice)
         |> String.join ""
 
     getIndices string =
@@ -371,7 +371,7 @@ formatCssString string =
     startIndices string =
       string
         |> String.indexes ("*/")
-        .|> (+) 2
+       .|> (+) 2
         |> (::) 0
 
     endIndices string =
@@ -393,12 +393,12 @@ ruleSetToString ruleSet =
   let
     selectors =
       ruleSet.selectors
-        .|> selectorToString
+       .|> selectorToString
         |> String.join ","
 
     declarations =
       ruleSet.declarations
-        .|> Css.encodeDeclaration
+       .|> Css.encodeDeclaration
         |> String.concat
 
   in
@@ -435,33 +435,33 @@ selectorToString selector =
       [ ancestor
       , descendant
       ]
-        .|> selectorToString
+       .|> selectorToString
         |> String.join " "
 
     Child (parent, child) ->
       [ parent
       , child
       ]
-        .|> selectorToString
+       .|> selectorToString
         |> String.join ">"
 
     Sibling (criterion, target) ->
       [ criterion
       , target
       ]
-        .|> selectorToString
+       .|> selectorToString
         |> String.join "~"
 
     Adjacent (criterion, target) ->
       [ criterion
       , target
       ]
-        .|> selectorToString
+       .|> selectorToString
         |> String.join "+"
 
     PseudoClass (target, pseudoList) ->
       pseudoList
-        |> (::) (target ||> selectorToString)
+        |> (::) (target |> selectorToString)
         |> String.join ":"
 
     PseudoElement (target, pseudo) ->

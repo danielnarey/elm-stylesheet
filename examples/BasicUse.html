@@ -8950,7 +8950,7 @@ var _danielnarey$elm_stylesheet$Stylesheet$selectorToString = function (selector
 						function (x, y) {
 							return {ctor: '::', _0: x, _1: y};
 						}),
-					A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['||>'], _p1._0._0, _danielnarey$elm_stylesheet$Stylesheet$selectorToString),
+					_danielnarey$elm_stylesheet$Stylesheet$selectorToString(_p1._0._0),
 					_p1._0._1));
 		case 'PseudoElement':
 			return A2(
@@ -9021,7 +9021,7 @@ var _danielnarey$elm_stylesheet$Stylesheet$formatCssString = function (string) {
 				_danielnarey$elm_toolkit$Toolkit_Helpers$applyList,
 				A2(
 					_danielnarey$elm_toolkit$Toolkit_Operators_ops['.|>'],
-					A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['||>'], string, getIndices),
+					getIndices(string),
 					_elm_lang$core$Basics$uncurry(_elm_lang$core$String$slice)),
 				string));
 	};
