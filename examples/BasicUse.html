@@ -3142,15 +3142,14 @@ var _elm_lang$core$Platform$Task = {ctor: 'Task'};
 var _elm_lang$core$Platform$ProcessId = {ctor: 'ProcessId'};
 var _elm_lang$core$Platform$Router = {ctor: 'Router'};
 var _danielnarey$elm_toolkit$Toolkit_Operators_ops = _danielnarey$elm_toolkit$Toolkit_Operators_ops || {};
-_danielnarey$elm_toolkit$Toolkit_Operators_ops['@@@|>'] = F2(
-	function (_p0, f) {
-		var _p1 = _p0;
-		return A3(f, _p1._0, _p1._1, _p1._2);
+_danielnarey$elm_toolkit$Toolkit_Operators_ops['!+>'] = F2(
+	function (firstResult, nextFunction) {
+		return A2(_elm_lang$core$Result$andThen, nextFunction, firstResult);
 	});
 var _danielnarey$elm_toolkit$Toolkit_Operators_ops = _danielnarey$elm_toolkit$Toolkit_Operators_ops || {};
-_danielnarey$elm_toolkit$Toolkit_Operators_ops['@@|>'] = F2(
-	function (params, f) {
-		return A2(_elm_lang$core$Basics$uncurry, f, params);
+_danielnarey$elm_toolkit$Toolkit_Operators_ops['?+>'] = F2(
+	function (firstResult, nextFunction) {
+		return A2(_elm_lang$core$Maybe$andThen, nextFunction, firstResult);
 	});
 var _danielnarey$elm_toolkit$Toolkit_Operators_ops = _danielnarey$elm_toolkit$Toolkit_Operators_ops || {};
 _danielnarey$elm_toolkit$Toolkit_Operators_ops['!|>'] = F2(
@@ -3173,6 +3172,21 @@ _danielnarey$elm_toolkit$Toolkit_Operators_ops['?='] = F2(
 		return A2(_elm_lang$core$Maybe$withDefault, defaultValue, maybeValue);
 	});
 var _danielnarey$elm_toolkit$Toolkit_Operators_ops = _danielnarey$elm_toolkit$Toolkit_Operators_ops || {};
+_danielnarey$elm_toolkit$Toolkit_Operators_ops['@@|>'] = F2(
+	function (params, f) {
+		return A2(_elm_lang$core$Basics$uncurry, f, params);
+	});
+var _danielnarey$elm_toolkit$Toolkit_Operators_ops = _danielnarey$elm_toolkit$Toolkit_Operators_ops || {};
+_danielnarey$elm_toolkit$Toolkit_Operators_ops['..|>'] = F2(
+	function (_p0, f) {
+		var _p1 = _p0;
+		return {
+			ctor: '_Tuple2',
+			_0: f(_p1._0),
+			_1: f(_p1._1)
+		};
+	});
+var _danielnarey$elm_toolkit$Toolkit_Operators_ops = _danielnarey$elm_toolkit$Toolkit_Operators_ops || {};
 _danielnarey$elm_toolkit$Toolkit_Operators_ops[':|>'] = F2(
 	function (a, f) {
 		return f(
@@ -3193,17 +3207,27 @@ _danielnarey$elm_toolkit$Toolkit_Operators_ops['||>'] = F2(
 		return f(a);
 	});
 var _danielnarey$elm_toolkit$Toolkit_Operators_ops = _danielnarey$elm_toolkit$Toolkit_Operators_ops || {};
-_danielnarey$elm_toolkit$Toolkit_Operators_ops[':+:'] = F2(
-	function (a1, a2) {
+_danielnarey$elm_toolkit$Toolkit_Operators_ops['#'] = F2(
+	function (f, b) {
+		return A2(_elm_lang$core$Basics$flip, f, b);
+	});
+var _danielnarey$elm_toolkit$Toolkit_Operators_ops = _danielnarey$elm_toolkit$Toolkit_Operators_ops || {};
+_danielnarey$elm_toolkit$Toolkit_Operators_ops[':|::'] = F2(
+	function (a, b) {
 		return {
 			ctor: '::',
-			_0: a1,
+			_0: a,
 			_1: {
 				ctor: '::',
-				_0: a2,
+				_0: b,
 				_1: {ctor: '[]'}
 			}
 		};
+	});
+var _danielnarey$elm_toolkit$Toolkit_Operators_ops = _danielnarey$elm_toolkit$Toolkit_Operators_ops || {};
+_danielnarey$elm_toolkit$Toolkit_Operators_ops[':|++'] = F2(
+	function (a, list) {
+		return {ctor: '::', _0: a, _1: list};
 	});
 var _danielnarey$elm_toolkit$Toolkit_Operators_ops = _danielnarey$elm_toolkit$Toolkit_Operators_ops || {};
 _danielnarey$elm_toolkit$Toolkit_Operators_ops['|::'] = F2(
@@ -6092,7 +6116,7 @@ function mapProperty(func, property)
 	return on(
 		property.realKey,
 		property.value.options,
-		A2(_elm_lang$core$Json$map, func, property.value.decoder)
+		A2(_elm_lang$core$Json_Decode$map, func, property.value.decoder)
 	);
 }
 
@@ -7690,7 +7714,8 @@ return {
 	staticProgram: staticProgram
 };
 
-}();var _elm_lang$virtual_dom$VirtualDom$programWithFlags = function (impl) {
+}();
+var _elm_lang$virtual_dom$VirtualDom$programWithFlags = function (impl) {
 	return A2(_elm_lang$virtual_dom$Native_VirtualDom.programWithFlags, _elm_lang$virtual_dom$VirtualDom_Debug$wrapWithFlags, impl);
 };
 var _elm_lang$virtual_dom$VirtualDom$program = function (impl) {
@@ -8389,25 +8414,25 @@ var _danielnarey$elm_css_basics$CssBasics$encodeCssValue = function (value) {
 				_0: 'rgba(',
 				_1: {
 					ctor: '::',
-					_0: A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['||>'], rgb.red, _elm_lang$core$Basics$toString),
+					_0: _elm_lang$core$Basics$toString(rgb.red),
 					_1: {
 						ctor: '::',
 						_0: ',',
 						_1: {
 							ctor: '::',
-							_0: A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['||>'], rgb.green, _elm_lang$core$Basics$toString),
+							_0: _elm_lang$core$Basics$toString(rgb.green),
 							_1: {
 								ctor: '::',
 								_0: ',',
 								_1: {
 									ctor: '::',
-									_0: A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['||>'], rgb.blue, _elm_lang$core$Basics$toString),
+									_0: _elm_lang$core$Basics$toString(rgb.blue),
 									_1: {
 										ctor: '::',
 										_0: ',',
 										_1: {
 											ctor: '::',
-											_0: A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['||>'], rgb.alpha, _elm_lang$core$Basics$toString),
+											_0: _elm_lang$core$Basics$toString(rgb.alpha),
 											_1: {
 												ctor: '::',
 												_0: ')',
@@ -8643,71 +8668,65 @@ var _danielnarey$elm_toolkit$Toolkit_Helpers$curry3 = F4(
 		return f(
 			{ctor: '_Tuple3', _0: a, _1: b, _2: c});
 	});
-var _danielnarey$elm_toolkit$Toolkit_Helpers$fourth4 = function (_p18) {
-	var _p19 = _p18;
-	return _p19._3;
-};
-var _danielnarey$elm_toolkit$Toolkit_Helpers$third4 = function (_p20) {
-	var _p21 = _p20;
-	return _p21._2;
-};
-var _danielnarey$elm_toolkit$Toolkit_Helpers$second4 = function (_p22) {
-	var _p23 = _p22;
-	return _p23._1;
-};
-var _danielnarey$elm_toolkit$Toolkit_Helpers$first4 = function (_p24) {
+var _danielnarey$elm_toolkit$Toolkit_Helpers$map4Tuple = F2(
+	function (f, _p18) {
+		var _p19 = _p18;
+		return {
+			ctor: '_Tuple4',
+			_0: f(_p19._0),
+			_1: f(_p19._1),
+			_2: f(_p19._2),
+			_3: f(_p19._3)
+		};
+	});
+var _danielnarey$elm_toolkit$Toolkit_Helpers$map3Tuple = F2(
+	function (f, _p20) {
+		var _p21 = _p20;
+		return {
+			ctor: '_Tuple3',
+			_0: f(_p21._0),
+			_1: f(_p21._1),
+			_2: f(_p21._2)
+		};
+	});
+var _danielnarey$elm_toolkit$Toolkit_Helpers$map2Tuple = F2(
+	function (f, _p22) {
+		var _p23 = _p22;
+		return {
+			ctor: '_Tuple2',
+			_0: f(_p23._0),
+			_1: f(_p23._1)
+		};
+	});
+var _danielnarey$elm_toolkit$Toolkit_Helpers$fourth4 = function (_p24) {
 	var _p25 = _p24;
-	return _p25._0;
+	return _p25._3;
 };
-var _danielnarey$elm_toolkit$Toolkit_Helpers$third3 = function (_p26) {
+var _danielnarey$elm_toolkit$Toolkit_Helpers$third4 = function (_p26) {
 	var _p27 = _p26;
 	return _p27._2;
 };
-var _danielnarey$elm_toolkit$Toolkit_Helpers$second3 = function (_p28) {
+var _danielnarey$elm_toolkit$Toolkit_Helpers$second4 = function (_p28) {
 	var _p29 = _p28;
 	return _p29._1;
 };
-var _danielnarey$elm_toolkit$Toolkit_Helpers$first3 = function (_p30) {
+var _danielnarey$elm_toolkit$Toolkit_Helpers$first4 = function (_p30) {
 	var _p31 = _p30;
 	return _p31._0;
 };
-var _danielnarey$elm_toolkit$Toolkit_Helpers$zip4 = function (_p32) {
+var _danielnarey$elm_toolkit$Toolkit_Helpers$third3 = function (_p32) {
 	var _p33 = _p32;
-	return A5(
-		_elm_lang$core$List$map4,
-		F4(
-			function (a, b, c, d) {
-				return {ctor: '_Tuple4', _0: a, _1: b, _2: c, _3: d};
-			}),
-		_p33._0,
-		_p33._1,
-		_p33._2,
-		_p33._3);
+	return _p33._2;
 };
-var _danielnarey$elm_toolkit$Toolkit_Helpers$zip3 = function (_p34) {
+var _danielnarey$elm_toolkit$Toolkit_Helpers$second3 = function (_p34) {
 	var _p35 = _p34;
-	return A4(
-		_elm_lang$core$List$map3,
-		F3(
-			function (a, b, c) {
-				return {ctor: '_Tuple3', _0: a, _1: b, _2: c};
-			}),
-		_p35._0,
-		_p35._1,
-		_p35._2);
+	return _p35._1;
 };
-var _danielnarey$elm_toolkit$Toolkit_Helpers$zip = function (_p36) {
+var _danielnarey$elm_toolkit$Toolkit_Helpers$first3 = function (_p36) {
 	var _p37 = _p36;
-	return A3(
-		_elm_lang$core$List$map2,
-		F2(
-			function (v0, v1) {
-				return {ctor: '_Tuple2', _0: v0, _1: v1};
-			}),
-		_p37._0,
-		_p37._1);
+	return _p37._0;
 };
-var _danielnarey$elm_toolkit$Toolkit_Helpers$unzip4 = function (_p38) {
+var _danielnarey$elm_toolkit$Toolkit_Helpers$zip4 = function (_p38) {
 	var _p39 = _p38;
 	return A5(
 		_elm_lang$core$List$map4,
@@ -8720,7 +8739,7 @@ var _danielnarey$elm_toolkit$Toolkit_Helpers$unzip4 = function (_p38) {
 		_p39._2,
 		_p39._3);
 };
-var _danielnarey$elm_toolkit$Toolkit_Helpers$unzip3 = function (_p40) {
+var _danielnarey$elm_toolkit$Toolkit_Helpers$zip3 = function (_p40) {
 	var _p41 = _p40;
 	return A4(
 		_elm_lang$core$List$map3,
@@ -8731,6 +8750,90 @@ var _danielnarey$elm_toolkit$Toolkit_Helpers$unzip3 = function (_p40) {
 		_p41._0,
 		_p41._1,
 		_p41._2);
+};
+var _danielnarey$elm_toolkit$Toolkit_Helpers$zip = function (_p42) {
+	var _p43 = _p42;
+	return A3(
+		_elm_lang$core$List$map2,
+		F2(
+			function (v0, v1) {
+				return {ctor: '_Tuple2', _0: v0, _1: v1};
+			}),
+		_p43._0,
+		_p43._1);
+};
+var _danielnarey$elm_toolkit$Toolkit_Helpers$unzip4 = function (_p44) {
+	var _p45 = _p44;
+	return A5(
+		_elm_lang$core$List$map4,
+		F4(
+			function (a, b, c, d) {
+				return {ctor: '_Tuple4', _0: a, _1: b, _2: c, _3: d};
+			}),
+		_p45._0,
+		_p45._1,
+		_p45._2,
+		_p45._3);
+};
+var _danielnarey$elm_toolkit$Toolkit_Helpers$unzip3 = function (_p46) {
+	var _p47 = _p46;
+	return A4(
+		_elm_lang$core$List$map3,
+		F3(
+			function (a, b, c) {
+				return {ctor: '_Tuple3', _0: a, _1: b, _2: c};
+			}),
+		_p47._0,
+		_p47._1,
+		_p47._2);
+};
+var _danielnarey$elm_toolkit$Toolkit_Helpers$list4Tuple = function (_p48) {
+	var _p49 = _p48;
+	return {
+		ctor: '::',
+		_0: _p49._0,
+		_1: {
+			ctor: '::',
+			_0: _p49._1,
+			_1: {
+				ctor: '::',
+				_0: _p49._2,
+				_1: {
+					ctor: '::',
+					_0: _p49._3,
+					_1: {ctor: '[]'}
+				}
+			}
+		}
+	};
+};
+var _danielnarey$elm_toolkit$Toolkit_Helpers$list3Tuple = function (_p50) {
+	var _p51 = _p50;
+	return {
+		ctor: '::',
+		_0: _p51._0,
+		_1: {
+			ctor: '::',
+			_0: _p51._1,
+			_1: {
+				ctor: '::',
+				_0: _p51._2,
+				_1: {ctor: '[]'}
+			}
+		}
+	};
+};
+var _danielnarey$elm_toolkit$Toolkit_Helpers$list2Tuple = function (_p52) {
+	var _p53 = _p52;
+	return {
+		ctor: '::',
+		_0: _p53._0,
+		_1: {
+			ctor: '::',
+			_0: _p53._1,
+			_1: {ctor: '[]'}
+		}
+	};
 };
 var _danielnarey$elm_toolkit$Toolkit_Helpers$getNth = F2(
 	function (n, list) {
@@ -8744,11 +8847,84 @@ var _danielnarey$elm_toolkit$Toolkit_Helpers$wrapList = function (a) {
 		_1: {ctor: '[]'}
 	};
 };
-var _danielnarey$elm_toolkit$Toolkit_Helpers$maybe4Tuple = function (tuple) {
-	var _p42 = tuple;
-	if (((((_p42.ctor === '_Tuple4') && (_p42._0.ctor === 'Just')) && (_p42._1.ctor === 'Just')) && (_p42._2.ctor === 'Just')) && (_p42._3.ctor === 'Just')) {
+var _danielnarey$elm_toolkit$Toolkit_Helpers$resultList = F2(
+	function (errorMsg, list) {
+		var _p54 = A2(_elm_lang$core$List$take, 1, list);
+		if (_p54.ctor === '::') {
+			if ((_p54._0.ctor === 'Ok') && (_p54._1.ctor === '[]')) {
+				return A2(
+					_elm_lang$core$Result$map,
+					F2(
+						function (x, y) {
+							return {ctor: '::', _0: x, _1: y};
+						})(_p54._0._0),
+					A2(
+						_danielnarey$elm_toolkit$Toolkit_Helpers$resultList,
+						errorMsg,
+						A2(_elm_lang$core$List$drop, 1, list)));
+			} else {
+				return _elm_lang$core$Result$Err(errorMsg);
+			}
+		} else {
+			return _elm_lang$core$Result$Ok(
+				{ctor: '[]'});
+		}
+	});
+var _danielnarey$elm_toolkit$Toolkit_Helpers$result4Tuple = F2(
+	function (error, tuple) {
+		var _p55 = tuple;
+		if (((((_p55.ctor === '_Tuple4') && (_p55._0.ctor === 'Ok')) && (_p55._1.ctor === 'Ok')) && (_p55._2.ctor === 'Ok')) && (_p55._3.ctor === 'Ok')) {
+			return _elm_lang$core$Result$Ok(
+				{ctor: '_Tuple4', _0: _p55._0._0, _1: _p55._1._0, _2: _p55._2._0, _3: _p55._3._0});
+		} else {
+			return _elm_lang$core$Result$Err(error);
+		}
+	});
+var _danielnarey$elm_toolkit$Toolkit_Helpers$result3Tuple = F2(
+	function (error, tuple) {
+		var _p56 = tuple;
+		if ((((_p56.ctor === '_Tuple3') && (_p56._0.ctor === 'Ok')) && (_p56._1.ctor === 'Ok')) && (_p56._2.ctor === 'Ok')) {
+			return _elm_lang$core$Result$Ok(
+				{ctor: '_Tuple3', _0: _p56._0._0, _1: _p56._1._0, _2: _p56._2._0});
+		} else {
+			return _elm_lang$core$Result$Err(error);
+		}
+	});
+var _danielnarey$elm_toolkit$Toolkit_Helpers$result2Tuple = F2(
+	function (error, tuple) {
+		var _p57 = tuple;
+		if (((_p57.ctor === '_Tuple2') && (_p57._0.ctor === 'Ok')) && (_p57._1.ctor === 'Ok')) {
+			return _elm_lang$core$Result$Ok(
+				{ctor: '_Tuple2', _0: _p57._0._0, _1: _p57._1._0});
+		} else {
+			return _elm_lang$core$Result$Err(error);
+		}
+	});
+var _danielnarey$elm_toolkit$Toolkit_Helpers$maybeList = function (list) {
+	var _p58 = A2(_elm_lang$core$List$take, 1, list);
+	if (_p58.ctor === '::') {
+		if ((_p58._0.ctor === 'Just') && (_p58._1.ctor === '[]')) {
+			return A2(
+				_elm_lang$core$Maybe$map,
+				F2(
+					function (x, y) {
+						return {ctor: '::', _0: x, _1: y};
+					})(_p58._0._0),
+				_danielnarey$elm_toolkit$Toolkit_Helpers$maybeList(
+					A2(_elm_lang$core$List$drop, 1, list)));
+		} else {
+			return _elm_lang$core$Maybe$Nothing;
+		}
+	} else {
 		return _elm_lang$core$Maybe$Just(
-			{ctor: '_Tuple4', _0: _p42._0._0, _1: _p42._1._0, _2: _p42._2._0, _3: _p42._3._0});
+			{ctor: '[]'});
+	}
+};
+var _danielnarey$elm_toolkit$Toolkit_Helpers$maybe4Tuple = function (tuple) {
+	var _p59 = tuple;
+	if (((((_p59.ctor === '_Tuple4') && (_p59._0.ctor === 'Just')) && (_p59._1.ctor === 'Just')) && (_p59._2.ctor === 'Just')) && (_p59._3.ctor === 'Just')) {
+		return _elm_lang$core$Maybe$Just(
+			{ctor: '_Tuple4', _0: _p59._0._0, _1: _p59._1._0, _2: _p59._2._0, _3: _p59._3._0});
 	} else {
 		return _elm_lang$core$Maybe$Nothing;
 	}
@@ -8767,10 +8943,10 @@ var _danielnarey$elm_toolkit$Toolkit_Helpers$take4Tuple = function (list) {
 			list));
 };
 var _danielnarey$elm_toolkit$Toolkit_Helpers$maybe3Tuple = function (tuple) {
-	var _p43 = tuple;
-	if ((((_p43.ctor === '_Tuple3') && (_p43._0.ctor === 'Just')) && (_p43._1.ctor === 'Just')) && (_p43._2.ctor === 'Just')) {
+	var _p60 = tuple;
+	if ((((_p60.ctor === '_Tuple3') && (_p60._0.ctor === 'Just')) && (_p60._1.ctor === 'Just')) && (_p60._2.ctor === 'Just')) {
 		return _elm_lang$core$Maybe$Just(
-			{ctor: '_Tuple3', _0: _p43._0._0, _1: _p43._1._0, _2: _p43._2._0});
+			{ctor: '_Tuple3', _0: _p60._0._0, _1: _p60._1._0, _2: _p60._2._0});
 	} else {
 		return _elm_lang$core$Maybe$Nothing;
 	}
@@ -8788,10 +8964,10 @@ var _danielnarey$elm_toolkit$Toolkit_Helpers$take3Tuple = function (list) {
 			list));
 };
 var _danielnarey$elm_toolkit$Toolkit_Helpers$maybe2Tuple = function (tuple) {
-	var _p44 = tuple;
-	if (((_p44.ctor === '_Tuple2') && (_p44._0.ctor === 'Just')) && (_p44._1.ctor === 'Just')) {
+	var _p61 = tuple;
+	if (((_p61.ctor === '_Tuple2') && (_p61._0.ctor === 'Just')) && (_p61._1.ctor === 'Just')) {
 		return _elm_lang$core$Maybe$Just(
-			{ctor: '_Tuple2', _0: _p44._0._0, _1: _p44._1._0});
+			{ctor: '_Tuple2', _0: _p61._0._0, _1: _p61._1._0});
 	} else {
 		return _elm_lang$core$Maybe$Nothing;
 	}
@@ -8807,9 +8983,23 @@ var _danielnarey$elm_toolkit$Toolkit_Helpers$take2Tuple = function (list) {
 			},
 			list));
 };
+var _danielnarey$elm_toolkit$Toolkit_Helpers$isBetween = F2(
+	function (_p62, value) {
+		var _p63 = _p62;
+		return (_elm_lang$core$Native_Utils.cmp(value, _p63._0) > 0) && (_elm_lang$core$Native_Utils.cmp(value, _p63._1) < 0);
+	});
+var _danielnarey$elm_toolkit$Toolkit_Helpers$isInRange = F2(
+	function (_p64, value) {
+		var _p65 = _p64;
+		return (_elm_lang$core$Native_Utils.cmp(value, _p65._0) > -1) && (_elm_lang$core$Native_Utils.cmp(value, _p65._1) < 1);
+	});
+var _danielnarey$elm_toolkit$Toolkit_Helpers$isOneOf = F2(
+	function (list, value) {
+		return A2(_elm_lang$core$List$member, value, list);
+	});
 var _danielnarey$elm_toolkit$Toolkit_Helpers$toBool = function (boolString) {
-	var _p45 = _elm_lang$core$String$toLower(boolString);
-	switch (_p45) {
+	var _p66 = _elm_lang$core$String$toLower(boolString);
+	switch (_p66) {
 		case 'true':
 			return _elm_lang$core$Result$Ok(true);
 		case 'false':
@@ -8818,6 +9008,33 @@ var _danielnarey$elm_toolkit$Toolkit_Helpers$toBool = function (boolString) {
 			return _elm_lang$core$Result$Err('String argument must be \'true\' or \'false\' (case ignored)');
 	}
 };
+var _danielnarey$elm_toolkit$Toolkit_Helpers$roundTo = F2(
+	function (place, number) {
+		var multiplier = _elm_lang$core$Basics$toFloat(
+			A2(
+				F2(
+					function (x, y) {
+						return Math.pow(x, y);
+					}),
+				10,
+				place));
+		return A3(
+			_elm_lang$core$Basics$flip,
+			F2(
+				function (x, y) {
+					return x / y;
+				}),
+			multiplier,
+			_elm_lang$core$Basics$toFloat(
+				_elm_lang$core$Basics$round(
+					A2(
+						F2(
+							function (x, y) {
+								return x * y;
+							}),
+						multiplier,
+						number))));
+	});
 var _danielnarey$elm_stylesheet$Stylesheet$matchExprToString = function (matchValue) {
 	var _p0 = matchValue;
 	switch (_p0.ctor) {
@@ -8984,7 +9201,7 @@ var _danielnarey$elm_stylesheet$Stylesheet$ruleSetToString = function (ruleSet) 
 			'{',
 			A2(_elm_lang$core$Basics_ops['++'], declarations, '}')));
 };
-var _danielnarey$elm_stylesheet$Stylesheet$formatCssString = function (string) {
+var _danielnarey$elm_stylesheet$Stylesheet$condenseCss = function (string) {
 	var endIndices = function (string) {
 		return A2(
 			_danielnarey$elm_toolkit$Toolkit_Operators_ops['|::'],
@@ -9014,9 +9231,7 @@ var _danielnarey$elm_stylesheet$Stylesheet$formatCssString = function (string) {
 				string));
 	};
 	var removeComments = function (string) {
-		return A2(
-			_elm_lang$core$String$join,
-			'',
+		return _elm_lang$core$String$concat(
 			A2(
 				_danielnarey$elm_toolkit$Toolkit_Helpers$applyList,
 				A2(
@@ -9094,14 +9309,19 @@ var _danielnarey$elm_stylesheet$Stylesheet$addPrepend = F2(
 		return _elm_lang$core$Native_Utils.update(
 			stylesheet,
 			{
-				prepends: A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['|::'], stylesheet.prepends, prepend)
+				prepends: A2(
+					_danielnarey$elm_toolkit$Toolkit_Operators_ops['|::'],
+					stylesheet.prepends,
+					A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['||>'], prepend, _danielnarey$elm_stylesheet$Stylesheet$condenseCss))
 			});
 	});
 var _danielnarey$elm_stylesheet$Stylesheet$withPrepends = F2(
 	function (prependList, stylesheet) {
 		return _elm_lang$core$Native_Utils.update(
 			stylesheet,
-			{prepends: prependList});
+			{
+				prepends: A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['.|>'], prependList, _danielnarey$elm_stylesheet$Stylesheet$condenseCss)
+			});
 	});
 var _danielnarey$elm_stylesheet$Stylesheet$addImport = F2(
 	function (newImport, stylesheet) {
@@ -9219,6 +9439,97 @@ var _danielnarey$elm_stylesheet$Stylesheet$Exactly = function (a) {
 	return {ctor: 'Exactly', _0: a};
 };
 var _danielnarey$elm_stylesheet$Stylesheet$IsDefined = {ctor: 'IsDefined'};
+var _danielnarey$elm_stylesheet$Stylesheet_FontImport$importFonts = F2(
+	function (fontFamilies, stylesheet) {
+		var encodeSubsets = function (subsets) {
+			return _elm_lang$core$List$isEmpty(subsets) ? '' : A2(
+				F2(
+					function (x, y) {
+						return A2(_elm_lang$core$Basics_ops['++'], x, y);
+					}),
+				'&subset=',
+				A2(_elm_lang$core$String$join, ',', subsets));
+		};
+		var encodeVariants = function (variants) {
+			return _elm_lang$core$List$isEmpty(variants) ? '' : A2(
+				F2(
+					function (x, y) {
+						return A2(_elm_lang$core$Basics_ops['++'], x, y);
+					}),
+				':',
+				A2(_elm_lang$core$String$join, ',', variants));
+		};
+		var encodeName = function (name) {
+			return A2(
+				_elm_lang$core$String$join,
+				'+',
+				_elm_lang$core$String$words(name));
+		};
+		var encodeFamily = function (family) {
+			return A2(
+				_danielnarey$elm_toolkit$Toolkit_Operators_ops['|++'],
+				A2(
+					_danielnarey$elm_toolkit$Toolkit_Operators_ops['|++'],
+					encodeName(family.name),
+					A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['||>'], family.variants, encodeVariants)),
+				A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['||>'], family.subsets, encodeSubsets));
+		};
+		var encodeUrl = function (familyList) {
+			return A2(
+				F2(
+					function (x, y) {
+						return A2(_elm_lang$core$Basics_ops['++'], x, y);
+					}),
+				'https://fonts.googleapis.com/css?family=',
+				A2(
+					_elm_lang$core$String$join,
+					'|',
+					A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['.|>'], fontFamilies, encodeFamily)));
+		};
+		return A2(
+			_danielnarey$elm_stylesheet$Stylesheet$addImport,
+			encodeUrl(fontFamilies),
+			stylesheet);
+	});
+var _danielnarey$elm_stylesheet$Stylesheet_FontImport$addSubset = F2(
+	function (subset, family) {
+		return _elm_lang$core$Native_Utils.update(
+			family,
+			{
+				subsets: A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['|::'], family.subsets, subset)
+			});
+	});
+var _danielnarey$elm_stylesheet$Stylesheet_FontImport$withSubsets = F2(
+	function (subsetList, family) {
+		return _elm_lang$core$Native_Utils.update(
+			family,
+			{subsets: subsetList});
+	});
+var _danielnarey$elm_stylesheet$Stylesheet_FontImport$addVariant = F2(
+	function (variant, family) {
+		return _elm_lang$core$Native_Utils.update(
+			family,
+			{
+				variants: A2(_danielnarey$elm_toolkit$Toolkit_Operators_ops['|::'], family.variants, variant)
+			});
+	});
+var _danielnarey$elm_stylesheet$Stylesheet_FontImport$withVariants = F2(
+	function (variantList, family) {
+		return _elm_lang$core$Native_Utils.update(
+			family,
+			{variants: variantList});
+	});
+var _danielnarey$elm_stylesheet$Stylesheet_FontImport$FontFamily = F3(
+	function (a, b, c) {
+		return {name: a, variants: b, subsets: c};
+	});
+var _danielnarey$elm_stylesheet$Stylesheet_FontImport$newFontFamily = function (name) {
+	return A3(
+		_danielnarey$elm_stylesheet$Stylesheet_FontImport$FontFamily,
+		name,
+		{ctor: '[]'},
+		{ctor: '[]'});
+};
 var _danielnarey$elm_stylesheet$Main$selectors = {myClass: 'myClass', myId: 'myId'};
 var _danielnarey$elm_stylesheet$Main$weight = {normal: 400, bold: 700};
 var _danielnarey$elm_stylesheet$Main$fonts = {
@@ -9239,6 +9550,18 @@ var _danielnarey$elm_stylesheet$Main$palette = {
 	purple: A3(_elm_lang$core$Color$rgb, 153, 51, 153)
 };
 var _danielnarey$elm_stylesheet$Main$myStylesheet = function () {
+	var orbitronFont = A2(
+		_danielnarey$elm_stylesheet$Stylesheet_FontImport$withVariants,
+		{
+			ctor: '::',
+			_0: _elm_lang$core$Basics$toString(_danielnarey$elm_stylesheet$Main$weight.normal),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$core$Basics$toString(_danielnarey$elm_stylesheet$Main$weight.bold),
+				_1: {ctor: '[]'}
+			}
+		},
+		_danielnarey$elm_stylesheet$Stylesheet_FontImport$newFontFamily('Orbitron'));
 	var myIdStyles = A2(
 		_danielnarey$elm_stylesheet$Stylesheet$withDeclarations,
 		{
@@ -9326,8 +9649,12 @@ var _danielnarey$elm_stylesheet$Main$myStylesheet = function () {
 			},
 			_danielnarey$elm_stylesheet$Stylesheet$newRuleSet));
 	return A2(
-		_danielnarey$elm_stylesheet$Stylesheet$addImport,
-		'https://fonts.googleapis.com/css?family=Orbitron:400,700',
+		_danielnarey$elm_stylesheet$Stylesheet_FontImport$importFonts,
+		{
+			ctor: '::',
+			_0: orbitronFont,
+			_1: {ctor: '[]'}
+		},
 		A2(
 			_danielnarey$elm_stylesheet$Stylesheet$withRules,
 			{

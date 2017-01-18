@@ -1,5 +1,6 @@
 import CssBasics exposing (CssValue(..), UnitType(..))
 import Stylesheet exposing (..)
+import Stylesheet.FontImport exposing (newFontFamily, withVariants, importFonts)
 import Html
 import Html.Attributes as Attr
 import Color
@@ -54,13 +55,21 @@ myStylesheet =
           , ("color", Col palette.purple)
           ]
 
+    orbitronFont =
+      newFontFamily "Orbitron"
+        |> withVariants
+          [ weight.normal |> toString
+          , weight.bold |> toString
+          ]
+
   in
     newStylesheet
       |> withRules
         [ myClassStyles
         , myIdStyles
         ]
-      |> addImport "https://fonts.googleapis.com/css?family=Orbitron:400,700"
+      |> importFonts
+        [ orbitronFont ]
 
 
 main =

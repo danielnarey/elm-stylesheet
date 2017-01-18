@@ -37,8 +37,8 @@ for a full working example.
 __Dependencies:__
 - [elm-lang/core/5.0.0](http://package.elm-lang.org/packages/elm-lang/core/5.0.0)
 - [elm-lang/html/2.0.0](http://package.elm-lang.org/packages/elm-lang/html/2.0.0)
-- [danielnarey/elm-toolkit/4.0.0](http://package.elm-lang.org/packages/danielnarey/elm-toolkit/4.0.0)
-- [danielnarey/elm-css-basics/1.0.2](http://package.elm-lang.org/packages/danielnarey/elm-css-basics/1.0.2)
+- [danielnarey/elm-toolkit/4.2.0](http://package.elm-lang.org/packages/danielnarey/elm-toolkit/4.2.0)
+- [danielnarey/elm-css-basics/2.0.2](http://package.elm-lang.org/packages/danielnarey/elm-css-basics/2.0.2)
 
 __Credits:__  
 The approach to generating CSS used in this library is based on the

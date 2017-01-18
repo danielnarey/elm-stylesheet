@@ -252,6 +252,7 @@ withPrepends prependList stylesheet =
   { stylesheet
   | prepends =
       prependList
+       .|> condenseCss
   }
 
 
@@ -264,7 +265,7 @@ addPrepend prepend stylesheet =
   { stylesheet
   | prepends =
       stylesheet.prepends
-        |:: prepend
+        |:: prepend ||> condenseCss
   }
 
 
@@ -352,16 +353,17 @@ toStyleNode stylesheet =
       ]
 
 
-{-| Format a prepended CSS string by remvoing comments and deleting excessive
-whitespace
+-- INTERNAL
+
+{-| Condense a CSS string by removing comments and unnecessary white space
 -}
-formatCssString : String -> String
-formatCssString string =
+condenseCss : String -> String
+condenseCss string =
   let
     removeComments string =
       string
         |> Helpers.applyList (string |> getIndices .|> uncurry String.slice)
-        |> String.join ""
+        |> String.concat
 
     getIndices string =
       string
