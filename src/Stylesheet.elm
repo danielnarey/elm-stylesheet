@@ -341,7 +341,7 @@ toCssString stylesheet =
 {-| Returns an `Html.node` with a `<style>` tag, which contains the stylesheet
 rendered as a string of CSS code
 -}
-toStyleNode : Stylesheet number -> Html number
+toStyleNode : Stylesheet number -> Html msg
 toStyleNode stylesheet =
   [ stylesheet
     |> toCssString
