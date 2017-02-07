@@ -25,8 +25,6 @@ for a full working example.
 
 
 import Stylesheet exposing (Stylesheet, addImport)
-import Toolkit.Operators exposing (..)
-import Toolkit.Helpers as Helpers
 import Html exposing (Html)
 
 
@@ -43,8 +41,11 @@ type alias FontFamily =
 {-| Initialize a new font family; the string argument provides the font name
 -}
 newFontFamily : String -> FontFamily
-newFontFamily name =
-  FontFamily name [] []
+newFontFamily nameString =
+  { name = nameString
+  , variants = []
+  , subsets = []
+  }
 
 
 {-| Add a list of variants to a font family, *replacing* any existing variants
@@ -60,11 +61,12 @@ withVariants variantList family =
 {-| Add a new variant to a font family, *retaining* any existing variants
 -}
 addVariant : String -> FontFamily -> FontFamily
-addVariant variant family =
+addVariant newVariant family =
   { family
   | variants =
-      family.variants
-        |:: variant
+      newVariant
+        |> List.singleton
+        |> List.append family.variants
   }
 
 
@@ -83,11 +85,12 @@ withSubsets subsetList family =
 subsets
 -}
 addSubset : String -> FontFamily -> FontFamily
-addSubset subset family =
+addSubset newSubset family =
   { family
   | subsets =
-      family.subsets
-        |:: subset
+      newSubset
+        |> List.singleton
+        |> List.append family.subsets
   }
 
 
@@ -95,20 +98,24 @@ addSubset subset family =
 directive containing an API query that will retreive the specified
 families/variants from Google Fonts and prepend it to the stylesheet
 -}
-importFonts : List FontFamily -> Stylesheet number -> Stylesheet number
+importFonts : List FontFamily -> Stylesheet -> Stylesheet
 importFonts fontFamilies stylesheet =
   let
     encodeUrl familyList =
       fontFamilies
-        .|> encodeFamily
+        |> List.map encodeFamily
         |> String.join "|"
         |> (++) "https://fonts.googleapis.com/css?family="
 
     encodeFamily family =
-      family.name
+      [ family.name
         |> encodeName
-        |++ family.variants ||> encodeVariants
-        |++ family.subsets ||> encodeSubsets
+      , family.variants
+        |> encodeVariants
+      , family.subsets
+        |> encodeSubsets
+      ]
+        |> String.concat
 
     encodeName name =
       name

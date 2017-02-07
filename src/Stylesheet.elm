@@ -1,8 +1,8 @@
 module Stylesheet exposing
-  ( Stylesheet, RuleSet, Selector(..), MatchValue(..), newRuleSet
-  , withSelectors, addSelector, withDeclarations, addDeclaration
-  , newStylesheet, withImports, addImport, withPrepends, addPrepend, withRules
-  , withRuleSets, addRuleSet, scoped, toCssString, toStyleNode
+  ( Stylesheet, RuleSet, Selector(..), MatchValue(..), newRuleSet, withSelectors
+  , addSelector, withDeclarations, addDeclaration, withMediaQuery, newStylesheet
+  , withImports, addImport, withPrepends, addPrepend, withRules, withRuleSets
+  , addRuleSet, scoped, toCssString, toStyleNode
   )
 
 
@@ -29,6 +29,7 @@ for a full working example.
 
 # Constructing Rule Sets
 @docs newRuleSet, withSelectors, addSelector, withDeclarations, addDeclaration
+@docs withMediaQuery
 
 # Constructing a Stylesheet
 @docs newStylesheet, withImports, addImport, withPrepends, addPrepend
@@ -39,12 +40,9 @@ for a full working example.
 
 -}
 
-import Toolkit.Operators exposing (..)
-import Toolkit.Helpers as Helpers
-import CssBasics as Css
+import CssBasics exposing (Declaration)
 import Html exposing (Html)
 import Html.Attributes as Attributes
-import List
 import Color exposing (Color)
 
 
@@ -57,10 +55,10 @@ applies globally to the HTML document, but it also contains a `scoped` attribute
 that can be set to `True` to take advantage of CSS scoping in HTML 5
 (currently only implemented in the Firefox browser).
 -}
-type alias Stylesheet number =
+type alias Stylesheet =
   { imports : List String
   , prepends : List String
-  , rules : List (RuleSet number)
+  , rules : List RuleSet
   , scoped : Bool
   }
 
@@ -69,9 +67,10 @@ type alias Stylesheet number =
 (and/or pseudo-elements) and one or more style declarations that apply to those
 elements.
 -}
-type alias RuleSet number =
+type alias RuleSet =
   { selectors : List Selector
-  , declarations : List (Css.Declaration number)
+  , declarations : List Declaration
+  , mediaQuery : Maybe String
   }
 
 
@@ -164,14 +163,17 @@ type MatchValue
 
 {-| Initialize a new rule set
 -}
-newRuleSet : RuleSet number
+newRuleSet : RuleSet
 newRuleSet =
-  RuleSet [] []
+  { selectors = []
+  , declarations = []
+  , mediaQuery = Nothing
+  }
 
 
 {-| Add a list of selectors to a rule set, *replacing* any existing selectors
 -}
-withSelectors : List Selector -> RuleSet number -> RuleSet number
+withSelectors : List Selector -> RuleSet -> RuleSet
 withSelectors selectorList ruleSet =
   { ruleSet
   | selectors =
@@ -181,19 +183,20 @@ withSelectors selectorList ruleSet =
 
 {-| Add a new selector to a rule set, *retaining* any existing selectors
 -}
-addSelector : Selector -> RuleSet number -> RuleSet number
+addSelector : Selector -> RuleSet -> RuleSet
 addSelector newSelector ruleSet =
   { ruleSet
   | selectors =
-      ruleSet.selectors
-        |:: newSelector
+      newSelector
+        |> List.singleton
+        |> List.append ruleSet.selectors
   }
 
 
 {-| Add a list of style declarations to a rule set, *replacing* any existing
 declarations
 -}
-withDeclarations : List (Css.Declaration number) -> RuleSet number -> RuleSet number
+withDeclarations : List Declaration -> RuleSet -> RuleSet
 withDeclarations declarationList ruleSet =
   { ruleSet
   | declarations =
@@ -204,12 +207,56 @@ withDeclarations declarationList ruleSet =
 {-| Add a new style declaration to a rule set, *retaining* any existing
 declarations
 -}
-addDeclaration : Css.Declaration number -> RuleSet number -> RuleSet number
+addDeclaration : Declaration -> RuleSet -> RuleSet
 addDeclaration newDeclaration ruleSet =
   { ruleSet
   | declarations =
-      ruleSet.declarations
-        |:: newDeclaration
+      newDeclaration
+        |> List.singleton
+        |> List.append ruleSet.declarations
+  }
+
+
+{-| Restrict the scope of a rule set by applying a media query. The first
+argument is a media type, given as a string, and the second argument is a list
+of media features, given as declarations. *Replaces* any existing media queries.
+
+    myRuleSet
+      |> withMediaQuery "screen" [("min-width", Unit 1250 Px)]
+-}
+withMediaQuery : String -> List Declaration -> RuleSet -> RuleSet
+withMediaQuery mediaType mediaFeatures ruleSet =
+  let
+    mediaFeatureToString (feature, value) =
+      [ "("
+      , feature
+      , ":"
+      , value
+        |> CssBasics.encodeCssValue
+      , ")"
+      ]
+        |> String.concat
+
+    maybeAnd =
+      case mediaFeatures of
+        [] ->
+          ""
+
+        _ ->
+          " and "
+
+  in
+  { ruleSet
+  | mediaQuery =
+      [ "@media "
+      , mediaType
+      , maybeAnd
+      , mediaFeatures
+        |> List.map mediaFeatureToString
+        |> String.join " and "
+      ]
+        |> String.concat
+        |> Just
   }
 
 
@@ -217,14 +264,18 @@ addDeclaration newDeclaration ruleSet =
 
 {-| Initialize a new stylesheet
 -}
-newStylesheet : Stylesheet number
+newStylesheet : Stylesheet
 newStylesheet =
-  Stylesheet [] [] [] False
+  { imports = []
+  , prepends = []
+  , rules = []
+  , scoped = False
+  }
 
 
 {-| Add a list of imports to a stylesheet, *replacing* any existing imports
 -}
-withImports : List String -> Stylesheet number -> Stylesheet number
+withImports : List String -> Stylesheet -> Stylesheet
 withImports importList stylesheet =
   { stylesheet
   | imports =
@@ -234,12 +285,13 @@ withImports importList stylesheet =
 
 {-| Add a new import to a stylesheet, *retaining* any existing imports
 -}
-addImport : String -> Stylesheet number -> Stylesheet number
+addImport : String -> Stylesheet -> Stylesheet
 addImport newImport stylesheet =
   { stylesheet
   | imports =
-      stylesheet.imports
-        |:: newImport
+      newImport
+        |> List.singleton
+        |> List.append stylesheet.imports
   }
 
 
@@ -247,12 +299,11 @@ addImport newImport stylesheet =
 and before its rule statements; this constructor will *replace* any existing
 prepends
 -}
-withPrepends : List String -> Stylesheet number -> Stylesheet number
+withPrepends : List String -> Stylesheet -> Stylesheet
 withPrepends prependList stylesheet =
   { stylesheet
   | prepends =
       prependList
-       .|> condenseCss
   }
 
 
@@ -260,18 +311,19 @@ withPrepends prependList stylesheet =
 any existing prepends) and before its rule statements; this constructor will
 *retain* any existing prepends
 -}
-addPrepend : String -> Stylesheet number -> Stylesheet number
-addPrepend prepend stylesheet =
+addPrepend : String -> Stylesheet -> Stylesheet
+addPrepend newPrepend stylesheet =
   { stylesheet
   | prepends =
-      stylesheet.prepends
-        |:: prepend ||> condenseCss
+      newPrepend
+        |> List.singleton
+        |> List.append stylesheet.prepends
   }
 
 
 {-| Add a list of rule sets to a stylesheet, *replacing* any existing rule sets
 -}
-withRules : List (RuleSet number) -> Stylesheet number -> Stylesheet number
+withRules : List RuleSet -> Stylesheet -> Stylesheet
 withRules ruleList stylesheet =
   { stylesheet
   | rules =
@@ -281,7 +333,7 @@ withRules ruleList stylesheet =
 
 {-| Alias for `withRules`
 -}
-withRuleSets : List (RuleSet number) -> Stylesheet number -> Stylesheet number
+withRuleSets : List RuleSet -> Stylesheet -> Stylesheet
 withRuleSets ruleList stylesheet =
   stylesheet
     |> withRules ruleList
@@ -289,12 +341,13 @@ withRuleSets ruleList stylesheet =
 
 {-| Add a new rule set to a stylesheet, *retaining* any existing rule sets
 -}
-addRuleSet : RuleSet number -> Stylesheet number -> Stylesheet number
+addRuleSet : RuleSet -> Stylesheet -> Stylesheet
 addRuleSet newRuleSet stylesheet =
   { stylesheet
   | rules =
-      stylesheet.rules
-        |:: newRuleSet
+      newRuleSet
+        |> List.singleton
+        |> List.append stylesheet.rules
   }
 
 
@@ -303,7 +356,7 @@ browser, the stylesheet will only be applied to the element on which
 `embedStylesheet` is called and all of that element's children. As of October
 2016 this scoping feature is only embedded in the Firefox browser.
 -}
-scoped : Stylesheet number -> Stylesheet number
+scoped : Stylesheet -> Stylesheet
 scoped stylesheet =
   { stylesheet
   | scoped =
@@ -315,12 +368,12 @@ scoped stylesheet =
 
 {-| Returns the compiled stylesheet as a string of CSS code
 -}
-toCssString : Stylesheet number -> String
+toCssString : Stylesheet -> String
 toCssString stylesheet =
   let
     importDirectives =
       stylesheet.imports
-       .|> (\a -> "@import url('" ++ a ++ "');")
+        |> List.map (\a -> "@import url('" ++ a ++ "');")
         |> String.concat
 
     prependedCss =
@@ -329,19 +382,21 @@ toCssString stylesheet =
 
     ruleStatements =
       stylesheet.rules
-       .|> ruleSetToString
+        |> List.map ruleSetToString
         |> String.concat
 
   in
-    importDirectives
-      |++ prependedCss
-      |++ ruleStatements
+    [ importDirectives
+    , prependedCss
+    , ruleStatements
+    ]
+      |> String.concat
 
 
 {-| Returns an `Html.node` with a `<style>` tag, which contains the stylesheet
 rendered as a string of CSS code
 -}
-toStyleNode : Stylesheet number -> Html msg
+toStyleNode : Stylesheet -> Html msg
 toStyleNode stylesheet =
   [ stylesheet
     |> toCssString
@@ -355,57 +410,40 @@ toStyleNode stylesheet =
 
 -- INTERNAL
 
-{-| Condense a CSS string by removing comments and unnecessary white space
--}
-condenseCss : String -> String
-condenseCss string =
-  let
-    removeComments string =
-      string
-        |> Helpers.applyList (string |> getIndices .|> uncurry String.slice)
-        |> String.concat
-
-    getIndices string =
-      string
-        |> Helpers.apply2 (startIndices, endIndices)
-        |> Helpers.zip
-
-    startIndices string =
-      string
-        |> String.indexes ("*/")
-       .|> (+) 2
-        |> (::) 0
-
-    endIndices string =
-      string
-        |> String.indexes ("/*")
-        |:: string ||> String.length
-
-  in
-    string
-      |> removeComments
-      |> String.words
-      |> String.join " "
-
 
 {-| Encode a rule set as a CSS string
 -}
-ruleSetToString : RuleSet number -> String
+ruleSetToString : RuleSet -> String
 ruleSetToString ruleSet =
   let
-    selectors =
-      ruleSet.selectors
-       .|> selectorToString
+    selectorsAndDeclarations =
+      [ ruleSet.selectors
+        |> List.map selectorToString
         |> String.join ","
 
-    declarations =
-      ruleSet.declarations
-       .|> Css.encodeDeclaration
+      , "{"
+
+      , ruleSet.declarations
+        |> List.map CssBasics.encodeDeclaration
+        |> String.concat
+
+      , "}"
+
+      ]
         |> String.concat
 
   in
-    selectors
-      |++ "{" ++ declarations ++ "}"
+    case ruleSet.mediaQuery of
+      Nothing ->
+        selectorsAndDeclarations
+
+      Just query ->
+        [ query
+        , "{"
+        , selectorsAndDeclarations
+        , "}"
+        ]
+          |> String.concat
 
 
 {-| Encode a selector as a CSS string
@@ -426,39 +464,42 @@ selectorToString selector =
       "." ++ className
 
     Attribute (target, attrName, expr) ->
-      target
+      [ target
         |> selectorToString
-        |++ "[" ++ attrName
-        |++ expr ||> matchExprToString
-        |++ "]"
-
+      , "["
+      , attrName
+      , expr
+        |> matchExprToString
+      , "]"
+      ]
+        |> String.concat
 
     Descendant (ancestor, descendant) ->
       [ ancestor
       , descendant
       ]
-       .|> selectorToString
+        |> List.map selectorToString
         |> String.join " "
 
     Child (parent, child) ->
       [ parent
       , child
       ]
-       .|> selectorToString
+        |> List.map selectorToString
         |> String.join ">"
 
     Sibling (criterion, target) ->
       [ criterion
       , target
       ]
-       .|> selectorToString
+        |> List.map selectorToString
         |> String.join "~"
 
     Adjacent (criterion, target) ->
       [ criterion
       , target
       ]
-       .|> selectorToString
+        |> List.map selectorToString
         |> String.join "+"
 
     PseudoClass (target, pseudoList) ->
@@ -467,13 +508,20 @@ selectorToString selector =
         |> String.join ":"
 
     PseudoElement (target, pseudo) ->
-      target
+      [ target
         |> selectorToString
-        |++ "::" ++ pseudo
+      , "::"
+      , pseudo
+      ]
+        |> String.concat
 
     At (keyword, expr) ->
-      "@" ++ keyword ++ " "
-        |++ expr
+      [ "@"
+      , keyword
+      , " "
+      , expr
+      ]
+        |> String.concat
 
     CssCode expr ->
       expr

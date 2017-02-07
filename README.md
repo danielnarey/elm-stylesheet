@@ -30,15 +30,17 @@ included with this library allow for semantically pleasing code that uses
 functional operators to chain expressions, making it easy to read and modify
 your CSS as you iterate your UI design.
 
+Support for media queries is included with version 4.0.0. See the
+`withMediaQuery` function, which may be applied to any rule set. 
+
 See
 [examples/BasicUse.elm](https://github.com/danielnarey/elm-stylesheet/tree/master/examples)
 for a full working example.
 
 __Dependencies:__
-- [elm-lang/core/5.0.0](http://package.elm-lang.org/packages/elm-lang/core/5.0.0)
+- [elm-lang/core/5.1.1](http://package.elm-lang.org/packages/elm-lang/core/5.1.1)
 - [elm-lang/html/2.0.0](http://package.elm-lang.org/packages/elm-lang/html/2.0.0)
-- [danielnarey/elm-toolkit/4.2.0](http://package.elm-lang.org/packages/danielnarey/elm-toolkit/4.2.0)
-- [danielnarey/elm-css-basics/2.0.2](http://package.elm-lang.org/packages/danielnarey/elm-css-basics/2.0.2)
+- [danielnarey/elm-css-basics/3.0.1](http://package.elm-lang.org/packages/danielnarey/elm-css-basics/3.0.1)
 
 __Credits:__  
 The approach to generating CSS used in this library is based on the
