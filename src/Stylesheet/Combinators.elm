@@ -1,5 +1,6 @@
 module Stylesheet.Combinators exposing
-  ( descendantOf, childOf, siblingOf, adjacentTo, pseudoClass, pseudoElement
+  ( combinedWith, descendantOf, childOf, siblingOf, adjacentTo, pseudoClass
+  , pseudoElement
   )
 
 {-|
@@ -7,7 +8,7 @@ module Stylesheet.Combinators exposing
 ## An alternative syntax for constructing combinator and pseudo selectors
 
 # Combinators
-@docs descendantOf, childOf, siblingOf, adjacentTo
+@docs combinedWith, descendantOf, childOf, siblingOf, adjacentTo
 
 # Pseudo Classes and Elements
 @docs pseudoClass, pseudoElement
@@ -18,10 +19,24 @@ module Stylesheet.Combinators exposing
 import Stylesheet exposing (Selector(..))
 
 
+{-| Constructor function to combine two selectors; intended to be
+used semantically as a pipeline function
+
+    Tag "a" |> combineWith (Class "button")
+
+    --> a.button
+-}
+combinedWith : Selector -> Selector -> Selector
+combinedWith criterion target =
+  Combined [target, criterion]
+
+
 {-| Constructor function to create a descendent selector; intended to be
 used semantically as a pipeline function
 
     Tag "p" |> descendantOf (Tag "article")
+
+    --> article p
 -}
 descendantOf : Selector -> Selector -> Selector
 descendantOf ancestor descendant =
@@ -32,6 +47,8 @@ descendantOf ancestor descendant =
 semantically as a pipeline function
 
     Tag "li" |> childOf (Tag "ul")
+
+    --> ul > li
 -}
 childOf : Selector -> Selector -> Selector
 childOf parent child =
@@ -42,6 +59,8 @@ childOf parent child =
 semantically as a pipeline function
 
     Tag "ul" |> siblingOf (Tag "p")
+
+    --> p ~ ul
 -}
 siblingOf : Selector -> Selector -> Selector
 siblingOf criterion target =
@@ -52,6 +71,8 @@ siblingOf criterion target =
 semantically as a pipeline function
 
     Tag "ul" |> adjacentTo (Tag "p")
+
+    --> p + ul
 -}
 adjacentTo : Selector -> Selector -> Selector
 adjacentTo criterion target =
@@ -62,6 +83,8 @@ adjacentTo criterion target =
 semantically as a pipeline function
 
     Tag "li" |> pseudoClass "hover"
+
+    --> li:hover
 -}
 pseudoClass : String -> Selector -> Selector
 pseudoClass pseudoName target =
@@ -72,6 +95,8 @@ pseudoClass pseudoName target =
 used semantically as a pipeline function
 
     Tag "li" |> pseudoElement "after"
+
+    --> li::after
 -}
 pseudoElement : String -> Selector -> Selector
 pseudoElement pseudoName target =

@@ -92,6 +92,9 @@ Here are some use examples:
     Attribute (Tag "a", "href", StartsWith "#")
       --> a[href^="#"]
 
+    Combined [Tag "a", Class "button", Class "small-button"]
+      --> a.button.small-button
+
     Descendant (Tag "article", Tag "p")
       --> article p
 
@@ -131,6 +134,7 @@ type Selector
   | Id String
   | Class String
   | Attribute (Selector, String, MatchValue)
+  | Combined (List Selector)
   | Descendant (Selector, Selector)
   | Child (Selector, Selector)
   | Sibling (Selector, Selector)
@@ -472,6 +476,11 @@ selectorToString selector =
         |> matchExprToString
       , "]"
       ]
+        |> String.concat
+
+    Combined selectorList ->
+      selectorList
+        |> List.map selectorToString
         |> String.concat
 
     Descendant (ancestor, descendant) ->

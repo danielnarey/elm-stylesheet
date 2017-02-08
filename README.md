@@ -30,8 +30,12 @@ included with this library allow for semantically pleasing code that uses
 functional operators to chain expressions, making it easy to read and modify
 your CSS as you iterate your UI design.
 
-Support for media queries is included with version 4.0.0. See the
-`withMediaQuery` function, which may be applied to any rule set. 
+Updates:
+
+- 4.0.0 adds support for media queries. See the
+`withMediaQuery` function, which may be applied to any rule set.
+
+- 5.0.0 adds support for combining multiple selectors, as in *tag.class1.class2*. See the `Combined` selector type and the `combinedWith` function in Stylesheet.Combinators.
 
 See
 [examples/BasicUse.elm](https://github.com/danielnarey/elm-stylesheet/tree/master/examples)
