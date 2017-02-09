@@ -8518,16 +8518,16 @@ var _danielnarey$elm_stylesheet$Stylesheet$selectorToString = function (selector
 			return _elm_lang$core$String$concat(
 				{
 					ctor: '::',
-					_0: _danielnarey$elm_stylesheet$Stylesheet$selectorToString(_p1._0._0),
+					_0: _p1._0,
 					_1: {
 						ctor: '::',
 						_0: '[',
 						_1: {
 							ctor: '::',
-							_0: _p1._0._1,
+							_0: _p1._1._0,
 							_1: {
 								ctor: '::',
-								_0: _danielnarey$elm_stylesheet$Stylesheet$matchExprToString(_p1._0._2),
+								_0: _danielnarey$elm_stylesheet$Stylesheet$matchExprToString(_p1._1._1),
 								_1: {
 									ctor: '::',
 									_0: ']',
@@ -8537,6 +8537,9 @@ var _danielnarey$elm_stylesheet$Stylesheet$selectorToString = function (selector
 						}
 					}
 				});
+		case 'Combined':
+			return _elm_lang$core$String$concat(
+				A2(_elm_lang$core$List$map, _danielnarey$elm_stylesheet$Stylesheet$selectorToString, _p1._0));
 		case 'Descendant':
 			return A2(
 				_elm_lang$core$String$join,
@@ -8624,25 +8627,6 @@ var _danielnarey$elm_stylesheet$Stylesheet$selectorToString = function (selector
 							ctor: '::',
 							_0: _p1._0._1,
 							_1: {ctor: '[]'}
-						}
-					}
-				});
-		case 'At':
-			return _elm_lang$core$String$concat(
-				{
-					ctor: '::',
-					_0: '@',
-					_1: {
-						ctor: '::',
-						_0: _p1._0._0,
-						_1: {
-							ctor: '::',
-							_0: ' ',
-							_1: {
-								ctor: '::',
-								_0: _p1._0._1,
-								_1: {ctor: '[]'}
-							}
 						}
 					}
 				});
@@ -8920,9 +8904,6 @@ var _danielnarey$elm_stylesheet$Stylesheet$RuleSet = F3(
 var _danielnarey$elm_stylesheet$Stylesheet$CssCode = function (a) {
 	return {ctor: 'CssCode', _0: a};
 };
-var _danielnarey$elm_stylesheet$Stylesheet$At = function (a) {
-	return {ctor: 'At', _0: a};
-};
 var _danielnarey$elm_stylesheet$Stylesheet$PseudoElement = function (a) {
 	return {ctor: 'PseudoElement', _0: a};
 };
@@ -8941,9 +8922,13 @@ var _danielnarey$elm_stylesheet$Stylesheet$Child = function (a) {
 var _danielnarey$elm_stylesheet$Stylesheet$Descendant = function (a) {
 	return {ctor: 'Descendant', _0: a};
 };
-var _danielnarey$elm_stylesheet$Stylesheet$Attribute = function (a) {
-	return {ctor: 'Attribute', _0: a};
+var _danielnarey$elm_stylesheet$Stylesheet$Combined = function (a) {
+	return {ctor: 'Combined', _0: a};
 };
+var _danielnarey$elm_stylesheet$Stylesheet$Attribute = F2(
+	function (a, b) {
+		return {ctor: 'Attribute', _0: a, _1: b};
+	});
 var _danielnarey$elm_stylesheet$Stylesheet$Class = function (a) {
 	return {ctor: 'Class', _0: a};
 };

@@ -22,7 +22,7 @@ import Stylesheet exposing (Selector(..))
 {-| Constructor function to combine two selectors; intended to be
 used semantically as a pipeline function
 
-    Tag "a" |> combineWith (Class "button")
+    Tag "a" |> combinedWith (Class "button")
 
     --> a.button
 -}

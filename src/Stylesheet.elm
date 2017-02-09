@@ -78,7 +78,15 @@ type alias RuleSet =
 set of style declarations apply. Specifications for each of the selector types
 may be found
 [here](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors).
-Here are some use examples:
+
+The `Any` selector will apply a rule set to every element in the DOM. This is
+sometimes used to set more generic browser rendering options.
+    Any
+      --> "*"
+
+The next four are the most common selectors, selecting for an HTML tag,
+an `id` attribute, a `class` attribute, and an exact or partial match to an
+attribute value, respectively:
 
     Tag "div"
       --> div
@@ -89,8 +97,14 @@ Here are some use examples:
     Class "class-name"
       --> .class-name
 
-    Attribute (Tag "a", "href", StartsWith "#")
+    Attribute "a" ("href", StartsWith "#")
       --> a[href^="#"]
+
+The following combinator selectors allow basic selectors to be put together in a
+variety of ways to contextually refine a query. See
+[Stylesheet.Combinators](http://package.elm-lang.org/packages/danielnarey/elm-stylesheet/latest/Stylesheet-Combinators)
+for a set of pipeline functions that provide a nicer syntax for generating
+combinator selectors.
 
     Combined [Tag "a", Class "button", Class "small-button"]
       --> a.button.small-button
@@ -113,19 +127,21 @@ Here are some use examples:
     PseudoElement (Tag "li", "after")
       --> li::after
 
-    At ("media", "screen and (min-width: 700px)")
-      --> @media screen and (min-width: 700px)
-
 On occasion, it might be simpler and more readable just to define the selector
 using CSS code. That is what the `CssCode` type is for:
 
     CssCode "article p ~ ul > li:nth-child(1)"
       --> article p ~ ul > li:nth-child(1)
 
-See
-[Stylesheet.Combinators](http://package.elm-lang.org/packages/danielnarey/elm-stylesheet/latest/Stylesheet/Combinators)
-for an alternative syntax that may be used to
-construct combinator selectors.
+The `CssCode` type key can also be used to create a `@font-face` rule as
+follows:
+
+    newRuleSet
+      |> addSelector (CssCode "@font-face")
+      |> withDeclarations
+        [ ("font-family", Str "myFont")
+        , ("src", Str "url(my_font.woff)")
+        ]
 
 -}
 type Selector
@@ -133,7 +149,7 @@ type Selector
   | Tag String
   | Id String
   | Class String
-  | Attribute (Selector, String, MatchValue)
+  | Attribute String (String, MatchValue)
   | Combined (List Selector)
   | Descendant (Selector, Selector)
   | Child (Selector, Selector)
@@ -141,7 +157,6 @@ type Selector
   | Adjacent (Selector, Selector)
   | PseudoClass (Selector, List String)
   | PseudoElement (Selector, String)
-  | At (String, String)
   | CssCode String
 
 
@@ -467,9 +482,8 @@ selectorToString selector =
     Class className ->
       "." ++ className
 
-    Attribute (target, attrName, expr) ->
+    Attribute target (attrName, expr) ->
       [ target
-        |> selectorToString
       , "["
       , attrName
       , expr
@@ -521,14 +535,6 @@ selectorToString selector =
         |> selectorToString
       , "::"
       , pseudo
-      ]
-        |> String.concat
-
-    At (keyword, expr) ->
-      [ "@"
-      , keyword
-      , " "
-      , expr
       ]
         |> String.concat
 
