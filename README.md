@@ -37,6 +37,9 @@ Updates:
 
 - 5.0.0 adds support for combining multiple selectors, as in *tag.class1.class2*. See the `Combined` selector type and the `combinedWith` function in Stylesheet.Combinators.
 
+- 6.0.1 adds a shorthand syntax for constructing CSS rule sets. See
+`Stylesheet.Shorthand`.
+
 See
 [examples/BasicUse.elm](https://github.com/danielnarey/elm-stylesheet/tree/master/examples)
 for a full working example.
