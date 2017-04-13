@@ -10,7 +10,8 @@ module Stylesheet.Shorthand exposing
 
 -}
 
-import Stylesheet exposing (Selector, Declaration, RuleSet, Stylesheet)
+import CssBasics exposing (Declaration)
+import Stylesheet exposing (Selector, RuleSet, Stylesheet)
 
 
 {-| A simplified rule set record without a media query option

@@ -1,5 +1,5 @@
 {
-    "version": "6.0.1",
+    "version": "6.1.0",
     "summary": "A CSS implementation with helpful constructors to generate a global stylesheet",
     "repository": "https://github.com/danielnarey/elm-stylesheet.git",
     "license": "BSD2",
@@ -10,7 +10,8 @@
     "exposed-modules": [
         "Stylesheet",
         "Stylesheet.Combinators",
-        "Stylesheet.FontImport"
+        "Stylesheet.FontImport",
+        "Stylesheet.Shorthand"
     ],
     "dependencies": {
         "danielnarey/elm-css-basics": "3.0.1 <= v < 4.0.0",
