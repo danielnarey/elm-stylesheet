@@ -1,5 +1,5 @@
 {
-    "version": "6.1.0",
+    "version": "7.0.0",
     "summary": "A CSS implementation with helpful constructors to generate a global stylesheet",
     "repository": "https://github.com/danielnarey/elm-stylesheet.git",
     "license": "BSD2",

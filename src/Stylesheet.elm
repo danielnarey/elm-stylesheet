@@ -98,8 +98,8 @@ attribute value, respectively:
     Class "class-name"
       --> .class-name
 
-    Attribute "a" ("href", StartsWith "#")
-      --> a[href^="#"]
+    Attribute ("href", StartsWith "#")
+      --> [href^="#"]
 
 The following combinator selectors allow basic selectors to be put together in a
 variety of ways to contextually refine a query. See
@@ -107,8 +107,8 @@ variety of ways to contextually refine a query. See
 for a set of pipeline functions that provide a nicer syntax for generating
 combinator selectors.
 
-    Combined [Tag "a", Class "button", Class "small-button"]
-      --> a.button.small-button
+    Combined [Tag "a", Class "button", Attribute ("href", StartsWith "#")]
+      --> a.button[href^="#"]
 
     Descendant (Tag "article", Tag "p")
       --> article p
@@ -150,7 +150,7 @@ type Selector
   | Tag String
   | Id String
   | Class String
-  | Attribute String (String, MatchValue)
+  | Attribute (String, MatchValue)
   | Combined (List Selector)
   | Descendant (Selector, Selector)
   | Child (Selector, Selector)
@@ -483,9 +483,8 @@ selectorToString selector =
     Class className ->
       "." ++ className
 
-    Attribute target (attrName, expr) ->
-      [ target
-      , "["
+    Attribute (attrName, expr) ->
+      [ "["
       , attrName
       , expr
         |> matchExprToString

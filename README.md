@@ -40,6 +40,8 @@ Updates:
 - 6.1.0 adds a shorthand syntax for constructing CSS rule sets. See
 `Stylesheet.Shorthand`.
 
+- 7.0.0 changes the syntax for the `Attribute` selector so that only the attribute name and `MatchValue` expression are given as arguments (previous versions required an HTML tag name or empty string as the first argument). As of this version, the appropriate way to append an attribute selector to a tag or class is to use the `Combined` type key or the `Combinators.combinedWith` function.
+
 See
 [examples/BasicUse.elm](https://github.com/danielnarey/elm-stylesheet/tree/master/examples)
 for a full working example.
