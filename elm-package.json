@@ -1,6 +1,6 @@
 {
-    "version": "7.0.0",
-    "summary": "A CSS implementation with helpful constructors to generate a global stylesheet",
+    "version": "7.1.0",
+    "summary": "A flexible API for generating a complete CSS stylesheet in Elm",
     "repository": "https://github.com/danielnarey/elm-stylesheet.git",
     "license": "BSD2",
     "source-directories": [

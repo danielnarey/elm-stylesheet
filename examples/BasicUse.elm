@@ -1,3 +1,9 @@
+module BasicUse exposing (myStylesheet)
+
+{-| A simple, self-contained example for danielnarey/elm-stylesheet
+@docs myStylesheet
+-}
+
 import CssBasics exposing (CssValue(..), UnitType(..))
 import Stylesheet exposing (..)
 import Stylesheet.FontImport exposing (newFontFamily, withVariants, importFonts)
@@ -31,6 +37,9 @@ selectors =
   }
 
 
+{-| An example stylesheet
+-}
+myStylesheet : Stylesheet
 myStylesheet =
   let
     myClassStyles =

@@ -1,50 +1,55 @@
-## A CSS implementation with helpful constructors for generating a global stylesheet
+## A flexible API for generating a complete CSS stylesheet in Elm
 
-This library builds off of
+This library builds off of my
 [CssBasics](http://package.elm-lang.org/packages/danielnarey/elm-css-basics/latest)
-to allow you to generate a stylesheet and embed it in your Elm
-program's view.
+package to allow the user to generate a complete CSS stylesheet in Elm. I
+created it to provide a more flexible alternative to other CSS-in-Elm packages
+that would let me write CSS in a way that conforms to my stylistic preferences
+for Elm code. The tradeoff for this flexibility is that it was not designed to
+safeguard the user from generating invalid CSS.
 
-In a browser fully compliant with the HTML 5 specification, you would be able to
-"scope" the stylesheet so that it is only applied to its parent element and all
-of that element's children, allowing you to embed multiple stylesheets that
-apply to different sections of the document. Unfortunately, as of October
-2016, Firefox is the only browser that has implemented this scoping feature.
-Thus, for the time being, recommended use of this library is to follow standard
-practice and create one stylesheet that applies globally to the document.
-Instead of linking to an external CSS file, however, this library allows you to
-embed CSS code between `<style>` tags in the body of the HTML DOM.
+### Getting Started
 
-Whereas it is standard practice to include `<style>` tags in the `<head>` of the
-document, Elm does not currently provide an interface to insert code into the
-document's `<head>`. This seems not to be a problem, as no difference in
-performance is apparent when `<style>` tags are inserted in the `<body>` of the
-document instead.
+The best way to get started with this library is to familiarize yourself with
+the syntax for style declarations used by
+[CssBasics](http://package.elm-lang.org/packages/danielnarey/elm-css-basics/latest/CssBasics),
+then check out this simple, self-contained
+[example](https://github.com/danielnarey/elm-stylesheet/tree/master/examples/BasicUse.elm).
 
-The basic workflow for using this library is (1) create your rule sets,
-consisting of selectors (identifying elements) and declarations (defining
-styles), (2) add your rule sets to a new stylesheet along with any import URLs
-needed to access external resources (e.g., Google fonts), and (3) embed the
-stylesheet at the root level of your HTML DOM. The constructor functions
-included with this library allow for semantically pleasing code that uses
-functional operators to chain expressions, making it easy to read and modify
-your CSS as you iterate your UI design.
+### Supported Features
 
-Updates:
+In addition to constructing basic rule sets with element, id, class, and
+attribute selectors, the current version of `elm-stylesheet` provides support
+for:
+- combinator selectors (including pseudo-classes and pseudo-elements)
+- media queries
+- import statements (with helpers for Google Font imports)
+- prepending strings of CSS code to your stylesheet
+- embedding a stylesheet in your Elm program's view
+- exporting a stylesheet to a *.css* file using rtfeldman's [elm-css](https://github.com/rtfeldman/elm-css) Node module
 
-- 4.0.0 adds support for media queries. See the
-`withMediaQuery` function, which may be applied to any rule set.
+### How to Export to a *.css* File using `elm-css`
 
-- 5.0.0 adds support for combining multiple selectors, as in *tag.class1.class2*. See the `Combined` selector type and the `combinedWith` function in Stylesheet.Combinators.
+Exporting to a .css file using [elm-css](https://github.com/rtfeldman/elm-css)
+requires a specially formatted port module. Copy this
+[template](https://github.com/danielnarey/elm-stylesheet/tree/master/examples/Stylesheets.elm)
+to the directory that contains your stylesheet module. Replace `BasicUse` with
+the name of your module and `BasicUse.myStylesheet` with the name of the
+function that returns the stylesheet you want to export. You can specify the
+name of the file to be created by changing `"myCssFile.css"` to whatever you
+want.
 
-- 6.1.0 adds a shorthand syntax for constructing CSS rule sets. See
-`Stylesheet.Shorthand`.
+To install `elm-css`, run the following in your terminal:
+```
+$ npm install -g elm-css
+```
 
-- 7.0.0 changes the syntax for the `Attribute` selector so that only the attribute name and `MatchValue` expression are given as arguments (previous versions required an HTML tag name or empty string as the first argument). As of this version, the appropriate way to append an attribute selector to a tag or class is to use the `Combined` type key or the `Combinators.combinedWith` function.
+Then run installed module, giving it the path to your `Stylesheets.elm` file, for example:
+```
+$ elm-css src/Stylesheets.elm
+```
 
-See
-[examples/BasicUse.elm](https://github.com/danielnarey/elm-stylesheet/tree/master/examples)
-for a full working example.
+If the compiler returns an error, check your file paths and exposed modules. 
 
 __Dependencies:__
 - [elm-lang/core/5.1.1](http://package.elm-lang.org/packages/elm-lang/core/5.1.1)
@@ -52,9 +57,12 @@ __Dependencies:__
 - [danielnarey/elm-css-basics/3.0.1](http://package.elm-lang.org/packages/danielnarey/elm-css-basics/3.0.1)
 
 __Credits:__  
+
 The approach to generating CSS used in this library is based on the
 [elm-css package](https://github.com/massung/elm-css) by Jeffrey Massung,
 version 1.1, licensed under BSD-3. I retained Massung's basic approach to
 "compiling" a stylesheet that will be applied when rendering a view, but I
 changed a lot of the implementation details, renamed some things, and added
 a number of features.
+
+The [elm-css](https://github.com/rtfeldman/elm-css) Node module, which may be used with this package to generate an external *.css* file, was created by Richard Feldman and is licensed under BSD-3.

@@ -1,8 +1,9 @@
 module Stylesheet exposing
-  ( Stylesheet, RuleSet, Selector(..), MatchValue(..), newRuleSet, withSelectors
-  , addSelector, withDeclarations, addDeclaration, withMediaQuery, newStylesheet
-  , withImports, addImport, withPrepends, addPrepend, withRules, withRuleSets
-  , addRuleSet, scoped, toCssString, toStyleNode
+  ( Stylesheet, RuleSet, Selector(..), MatchValue(..), CssFileStructure
+  , newRuleSet, withSelectors, addSelector, withDeclarations, addDeclaration
+  , withMediaQuery, newStylesheet, withImports, addImport, withPrepends
+  , addPrepend, withRules, withRuleSets, addRuleSet, scoped, toCssString
+  , toFileStructure, toStyleNode
   )
 
 
@@ -17,7 +18,8 @@ program's view. The basic workflow for using this library is (1) create your
 rule sets, consisting of selectors (identifying elements) and declarations
 (defining styles), (2) add your rule sets to a new stylesheet along with any
 import URLs needed to access external resources (e.g., Google fonts), and (3)
-embed the stylesheet at the root level of your HTML DOM.
+render your stylesheet to a string, an HTML `<style>` node, or a
+data structure for exporting to a .css file.
 
 See
 [examples/BasicUse.elm](https://github.com/danielnarey/elm-stylesheet/tree/master/examples)
@@ -36,7 +38,7 @@ for a full working example.
 @docs withRules, withRuleSets, addRuleSet, scoped
 
 # Compiling/Rendering a Stylesheet
-@docs toCssString, toStyleNode
+@docs toCssString, toStyleNode, toFileStructure, CssFileStructure
 
 -}
 
@@ -426,6 +428,31 @@ toStyleNode stylesheet =
       [ stylesheet.scoped
         |> Attributes.scoped
       ]
+
+
+{-| Returns the compiled stylesheet in the format required to export it to a
+.css file using rtfeldman's [elm-css](https://github.com/rtfeldman/elm-css)
+Node module.
+
+-}
+toFileStructure : String -> Stylesheet -> CssFileStructure
+toFileStructure filename stylesheet =
+  [ { filename = filename
+    , content = stylesheet |> toCssString
+    , success = True
+    }
+  ]
+
+
+{-| Alias for [rtfeldman/elm-css/Css/File/CssFileStructure](https://github.com/rtfeldman/elm-css/blob/master/src/Css/File.elm)
+-}
+type alias CssFileStructure =
+  List
+    { filename : String
+    , content : String
+    , success : Bool
+    }
+
 
 
 -- INTERNAL
