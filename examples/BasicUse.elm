@@ -1,4 +1,4 @@
-module BasicUse exposing (myStylesheet)
+module BasicUse exposing (myStylesheet, main)
 
 {-| A simple, self-contained example for danielnarey/elm-stylesheet
 @docs myStylesheet

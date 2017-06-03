@@ -1,8 +1,8 @@
 module Stylesheet.Shorthand exposing
-  ( Shorthand, toRuleSetList, toStylesheet)
+  ( Shorthand, toRuleSetList, toStylesheet )
 
 {-|
-# Shorthand representation of a CSS rule set
+## Shorthand representation of a CSS rule set
 @docs Shorthand
 
 # Converting from shorthand to standard representations
@@ -14,7 +14,9 @@ import CssBasics exposing (Declaration)
 import Stylesheet exposing (Selector, RuleSet, Stylesheet)
 
 
-{-| A simplified rule set record without a media query option
+{-| A simplified rule set record without a media query option. Useful for
+building longer stylesheets when you don't want to use the constructor
+functions.
 
     short =
       [ { selectors =

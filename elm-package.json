@@ -1,5 +1,5 @@
 {
-    "version": "7.1.0",
+    "version": "7.1.1",
     "summary": "A flexible API for generating a complete CSS stylesheet in Elm",
     "repository": "https://github.com/danielnarey/elm-stylesheet.git",
     "license": "BSD2",

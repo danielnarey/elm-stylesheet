@@ -5,7 +5,7 @@ module Stylesheet.Combinators exposing
 
 {-|
 
-## An alternative syntax for constructing combinator and pseudo selectors
+## Semantic constructor functions for combinator and pseudo selectors
 
 # Combinators
 @docs combinedWith, descendantOf, childOf, siblingOf, adjacentTo

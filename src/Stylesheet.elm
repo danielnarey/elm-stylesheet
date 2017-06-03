@@ -9,21 +9,19 @@ module Stylesheet exposing
 
 {-|
 
-## A CSS implementation with helpful constructors for generating a global stylesheet
+## A flexible API for generating a complete CSS stylesheet in Elm
 
-This library builds off of
-[CssBasics](http://package.elm-lang.org/packages/danielnarey/elm-css-basics/latest)
-to allow you to generate a stylesheet and embed it in your Elm
-program's view. The basic workflow for using this library is (1) create your
-rule sets, consisting of selectors (identifying elements) and declarations
-(defining styles), (2) add your rule sets to a new stylesheet along with any
-import URLs needed to access external resources (e.g., Google fonts), and (3)
-render your stylesheet to a string, an HTML `<style>` node, or a
-data structure for exporting to a .css file.
+The basic workflow for using this library is: (1) create rule sets, consisting
+of selectors (identifying elements) and declarations (defining styles), (2) add
+your rule sets to a new stylesheet along with any import URLs needed to access
+external resources (e.g., Google fonts), and (3) render your stylesheet to an
+HTML `<style>` node or to a data structure for exporting to a *.css* file.
 
 See
 [examples/BasicUse.elm](https://github.com/danielnarey/elm-stylesheet/tree/master/examples)
-for a full working example.
+for a full working example. See the package
+[README](http://package.elm-lang.org/packages/danielnarey/elm-stylesheet/latest/)
+for instructions on exporting to a *.css* file.
 
 
 # CSS Representation
