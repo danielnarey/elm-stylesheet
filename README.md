@@ -1,3 +1,7 @@
+# Not updated for Elm 0.19
+
+---
+
 ## A flexible API for generating a complete CSS stylesheet in Elm
 
 This library builds off of my
